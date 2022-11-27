@@ -13,6 +13,8 @@
         stopDrag = 1,
         stopBoom = 1,
         boomDecay = 1,
+        blockNum = 280,
+        rand = 0,
         isup = 0,
         ing = 0,
         isdrag = 0,
@@ -108,7 +110,7 @@
             length: len,
             z: script.getAttribute("zIndex") || -1,
             opacity: script.getAttribute("opacity") || 0.5,
-            count: script.getAttribute("count") || 280
+            count: script.getAttribute("count") || blockNum
         }
     }
     //获得窗口宽高，并设置canvas元素宽高
@@ -313,6 +315,7 @@
         if(isup == 1) {
             return
         }
+        rand = getRndInteger(0, Math.floor(blockNum / 4))
         console.log("onclick")
         i = i || window.event; 
         mouseclick.x = i.clientX; 
@@ -350,6 +353,7 @@
         calculate();
         window.cancelAnimationFrame(stopDrag)
         window.cancelAnimationFrame(stopBoom)
+        rand = getRndInteger(0, Math.floor(blockNum / 4))
         drag()
         setTimeout(function() {
             isup = 1
@@ -381,21 +385,22 @@
     function drag() {
         var w = [mouse].concat(squares);
         w.splice(w.indexOf(mouse), 1);
-        var z = w.splice(0, 210)
+        console.log("drag" + rand)
+        var z = w.splice(0 + rand, Math.floor(blockNum / 4 * 3 +rand))
         for(var i = 0; i < z.length; i++) {
             draw_assist(z[i], 2, w)
         } 
         stopDrag = animation(drag);    
     }
     function boom() {
-        console.log(boomDecay)
+        // console.log(boomDecay)
         if (boomDecay >= 0) {
             boomDecay -= 45 / 4500
         }
-        
+        console.log("boom" + rand)
         var w = [mouse].concat(squares);
         w.splice(w.indexOf(mouse), 1);
-        var z = w.splice(0, 210)
+        var z = w.splice(0 + rand, Math.floor(blockNum / 4 * 3 + rand))
         for(var i = 0; i < z.length; i++) {
             draw_assist(z[i], 3, w)
         } 

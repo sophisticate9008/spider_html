@@ -254,8 +254,8 @@
                     //使i小方块受鼠标小方块束缚，即如果i小方块与鼠标小方块距离过大，i小方块会被鼠标小方块束缚,
                     //造成 多个小方块以鼠标为圆心，mouse.max/2为半径绕成一圈
                     if(x === mouse && distance > x.max / 2){
-                        i.x = i.x - 0.03 * x_diff;
-                        i.y = i.y - 0.03 * y_diff;
+                        i.x = i.x - 0.0136 * x_diff;
+                        i.y = i.y - 0.0136 * y_diff;
                     }
                     A = (x.max - distance) / x.max;
                     context.beginPath();

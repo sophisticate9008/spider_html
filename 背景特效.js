@@ -148,9 +148,9 @@
             rmax : colors[color_kind].rmax,
             gmax : colors[color_kind].gmax,
             bmax : colors[color_kind].bmax,
-            r : colors[color_kind].rmin,
-            g : colors[color_kind].gmin,
-            b : colors[color_kind].bmin,
+            r : getRndInteger(colors[color_kind].rmin, colors[color_kind].rmax),
+            g : getRndInteger(colors[color_kind].gmin, colors[color_kind].gmax),
+            b : getRndInteger(colors[color_kind].bmin, colors[color_kind].bmax),
             dir: 1
         })
     } 

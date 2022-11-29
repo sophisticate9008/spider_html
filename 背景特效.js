@@ -7,13 +7,15 @@
 //canvas元素相关
     //创建canvas元素，并设置canvas元素的id
     var canvas    = document.createElement("canvas"),
+        divM = document.getElementsByTagName("div");
         context   = canvas.getContext("2d"), 
         colors = [],
         stopDraw = 1,
         stopDrag = 1,
         stopBoom = 1,
         boomDecay = 1,
-        blockNum = 280,
+        blockDivInnerClickEvent = 0,
+        blockNum = 140,
         rand = 0,
         isup = 0,
         ing = 0,
@@ -148,7 +150,8 @@
             bmax : colors[color_kind].bmax,
             r : colors[color_kind].rmin,
             g : colors[color_kind].gmin,
-            b : colors[color_kind].bmin
+            b : colors[color_kind].bmin,
+            dir: 1
         })
     } 
     //生成鼠标小方块
@@ -186,18 +189,10 @@
         var w
         var A
         var color
-        var notFull = 0
-        var temp = 0
         var change = 1
-        if (i.r < i.rmax) {
-            notFull += 1
-        }
-        if (i.g < i.gmax) {
-            notFull += change
-        }
-        if (i.b < i.bmax) {
-            notFull += change
-        }
+        var rand = 0
+        
+        
         //实现小方块定向移动
         if (sel == 1) {
             i.x += i.xa;
@@ -211,31 +206,25 @@
             i.x -= 3 * i.xb * boomDecay;
             i.y -= 3 * i.yb * boomDecay;
         }
-        if(i.r >= i.rmax && i.g >= i.gmax && i.b >= i.bmax) {
-            i.r = i.rmin
-            i.g = i.gmin
-            i.b = i.bmin
-        }
-        temp = getRndInteger(1, notFull)
-        if (i.r >= i.rmax) {
-            temp = (temp + 1) % 3
-        }
-        if (i.g >= i.gmax) {
-            temp = (temp + 1) % 3
-        }
-        if (i.b >= i.bmax) {
-            temp = (temp + 1) % 3
-        }
-        if (temp == 1 && i.r < i.rmax) {
-            i.r += change
-        }
-        if (temp == 2 && i.g < i.gmax) {
-            i.g += change
-        }
-        if (temp == 3 && i.b < i.bmax) {
-            i.b += change
-        }            
+        rand = getRndInteger(1, 6) 
+        if(rand == 1) {
+            if (i.r >= i.rmax || i.r <= i.rmin) {
+                i.dir *= -1
+            }
+            i.r += i.dir * change
+        } else if (rand == 2){
+            if (i.g >= i.gmax || i.g <= i.gmin) {
+                i.dir *= -1
+            }
+            i.g += i.dir * change            
+        } else if (rand == 3){
+            if (i.b >= i.bmax || i.b <= i.bmin) {
+                i.dir *= -1
+            }
+            i.b += i.dir * change               
+        } else {}
         color = '' + i.r + ',' + i.g + ',' + i.b
+
         // 控制小方块移动方向
         // 当小方块达到窗口边界时，反向移动
         if (sel == 1) {
@@ -312,6 +301,12 @@
         max : 20000
     }
     window.onclick = function(i) {
+        blockClickEvent()
+        if (blockDivInnerClickEvent == 1) {
+            
+            blockDivInnerClickEvent = 0
+            return false
+        }
         if(isup == 1) {
             return
         }
@@ -343,9 +338,15 @@
         
     }
     window.onmousedown = function(i) {
+        blockClickEvent()
+        if (blockDivInnerClickEvent == 1) {
+            blockDivInnerClickEvent = 0
+            return false
+        }
         if(ing == 1) {
             return
         }
+        console.log("mousedown")
         isup = 0
         i = i || window.event; 
         mouseclick.x = i.clientX; 
@@ -367,9 +368,17 @@
         }, 1000)        
     }
     window.onmouseup = function(i) {
+        
+        blockClickEvent()
+        if (blockDivInnerClickEvent == 1) {
+            blockDivInnerClickEvent = 0
+            return false
+        }
         if(isup == 1) {
+            console.log("mouseup")
             boom()
         }
+        
         setTimeout(function() {
             window.cancelAnimationFrame(stopBoom)
             boomDecay = 1
@@ -406,8 +415,29 @@
         } 
         stopBoom = animation(boom);                
     }
+    function blockClickEvent() {
+        list = document.getElementsByTagName("div");
+        
+        for(var i = 0; i < list.length; i++) {
+            list[i].onmousedown = function() {
+                console.log("div内阻断点击")
+                blockDivInnerClickEvent = 1
+            }
+            list[i].onclick = function() {
+                console.log("div内阻断点击")
+                blockDivInnerClickEvent = 1
+            }  
+            list[i].onmouseup = function() {
+                console.log("div内阻断点击")
+                blockDivInnerClickEvent = 1
+            }                           
+            
+        }
+        
+    }
     //此处是等待0.1秒后，执行一次draw()，真正的动画效果是用window.requestAnimationFrame实现的
     setTimeout(function () {
         draw();
     }, 100)  
+    
 }()

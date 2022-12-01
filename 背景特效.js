@@ -7,13 +7,14 @@
 //canvas元素相关
     //创建canvas元素，并设置canvas元素的id
     var canvas    = document.createElement("canvas"),
-        divM = document.getElementsByTagName("div");
+        divM = document.getElementsByTagName("div"),
         context   = canvas.getContext("2d"), 
         colors = [],
         stopDraw = 1,
         stopDrag = 1,
         stopBoom = 1,
         boomDecay = 1,
+        boomspeed = 2,
         blockDivInnerClickEvent = 0,
         blockNum = 140,
         rand = 0,
@@ -205,8 +206,8 @@
             i.y += i.yb;            
         }
         if (sel == 3) {
-            i.x -= 3 * i.xb * boomDecay;
-            i.y -= 3 * i.yb * boomDecay;
+            i.x -= boomspeed * i.xb * boomDecay;
+            i.y -= boomspeed * i.yb * boomDecay;
         }
         rand = getRndInteger(1, 6) 
         if(rand == 1) {

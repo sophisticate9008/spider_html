@@ -308,7 +308,7 @@
         if (blockDivInnerClickEvent == 1) {
             
             blockDivInnerClickEvent = 0
-            return false
+            return true
         }
         if(isup == 1) {
             return
@@ -344,7 +344,7 @@
         blockClickEvent()
         if (blockDivInnerClickEvent == 1) {
             blockDivInnerClickEvent = 0
-            return false
+            return true
         }
         if(ing == 1) {
             return
@@ -375,7 +375,7 @@
         blockClickEvent()
         if (blockDivInnerClickEvent == 1) {
             blockDivInnerClickEvent = 0
-            return false
+            return true
         }
         if(isup == 1) {
             console.log("mouseup")

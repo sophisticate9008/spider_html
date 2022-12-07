@@ -154,7 +154,9 @@
             r : getRndInteger(colors[color_kind].rmin, colors[color_kind].rmax),
             g : getRndInteger(colors[color_kind].gmin, colors[color_kind].gmax),
             b : getRndInteger(colors[color_kind].bmin, colors[color_kind].bmax),
-            dir: 1
+            dir_r: 1,
+            dir_g: 1,
+            dir_b: 1
         })
     } 
     //生成鼠标小方块
@@ -212,19 +214,19 @@
         rand = getRndInteger(1, 6) 
         if(rand == 1) {
             if (i.r >= i.rmax || i.r <= i.rmin) {
-                i.dir *= -1
+                i.dir_r *= -1
             }
-            i.r += i.dir * change
+            i.r += i.dir_r * change
         } else if (rand == 2){
             if (i.g >= i.gmax || i.g <= i.gmin) {
-                i.dir *= -1
+                i.dir_g *= -1
             }
-            i.g += i.dir * change            
+            i.g += i.dir_g * change            
         } else if (rand == 3){
             if (i.b >= i.bmax || i.b <= i.bmin) {
-                i.dir *= -1
+                i.dir_b *= -1
             }
-            i.b += i.dir * change               
+            i.b += i.dir_b * change               
         } else {}
         color = '' + i.r + ',' + i.g + ',' + i.b
 
@@ -397,7 +399,7 @@
     function drag() {
         var w = [mouse].concat(squares);
         w.splice(w.indexOf(mouse), 1);
-        console.log("drag" + rand)
+        
         var z = w.splice(0 + rand, Math.floor(blockNum / 4 * 3 +rand))
         for(var i = 0; i < z.length; i++) {
             draw_assist(z[i], 2, w)
@@ -409,7 +411,6 @@
         if (boomDecay >= 0) {
             boomDecay -= 45 / 4500
         }
-        console.log("boom" + rand)
         var w = [mouse].concat(squares);
         w.splice(w.indexOf(mouse), 1);
         var z = w.splice(0 + rand, Math.floor(blockNum / 4 * 3 + rand))
@@ -423,15 +424,16 @@
         
         for(var i = 0; i < list.length; i++) {
             list[i].onmousedown = function() {
-                console.log("div内阻断点击")
+                
+                
                 blockDivInnerClickEvent = 1
             }
             list[i].onclick = function() {
-                console.log("div内阻断点击")
+                
                 blockDivInnerClickEvent = 1
             }  
             list[i].onmouseup = function() {
-                console.log("div内阻断点击")
+                
                 blockDivInnerClickEvent = 1
             }                           
             
